@@ -7,58 +7,65 @@ class GameSprite(sprite.Sprite):
         self.image = transform.scale(image.load(player_image),(w,h))
         self.speed = player_speed
         self.rect=self.image.get_rect()
-        self.rect.x = player_x
+        self.rect.x=player_x
         self.rect.y = player_y
     def reset(self):
         window.blit(self.image, (self.rect.x,self.rect.y))
 
-class Player(GameSprite):
+class Player1(GameSprite):
     def update(self):
         key_pressed = key.get_pressed()
-        if key_pressed[K_LEFT] and self.rect.x>5:
-            self.rect.x-=self.speed
-        if key_pressed[K_RIGHT] and self.rect.x<715:
-            self.rect.x+=self.speed
-    def fire(self):
-        bullet = Bullet("bullet.png",20,15,self.rect.centerx,self.rect.top,10)
-        bullets.add(bullet)
-        shot.play()
-window = display.set_mode((800, 600))
-display.set_caption('ксг')
-bg = transform.scale(image.load('fff.jpg'),(800, 600))
+        if key_pressed[K_w] and self.rect.y>0:
+            self.rect.y-=self.speed
+        if key_pressed[K_s] and self.rect.y<450:
+            self.rect.y+=self.speed
+class Player2(GameSprite):
+    def update(self):
+        key_pressed = key.get_pressed()
+        if key_pressed[K_UP] and self.rect.y>0:
+            self.rect.y-=self.speed
+        if key_pressed[K_DOWN] and self.rect.y<450:
+            self.rect.y+=self.speed
 
 
 
 
-Finish = False
-run=False
+
+ball = 'mayot.png'
+racket = 'rocket.png' 
+finish = False
+run=True
 clock = time.Clock()
+white = (255,255,255)
 
 
 
 
 
-space_ship = Player("rocket.png",80,100,380,495,5)
+racket1 = Player1(racket,40,150,10,250,5)
+racket2 = Player2(racket,40,150,1160,250,5)
+
+window = display.set_mode((1200, 600))
+display.set_caption('PingPong')
+window.fill(white)
 
 
-mixer.init()
-mixer.music.load('d.ogg.ogg')
-mixer.music.play()
-shot = mixer.Sound('d.ogg.ogg')
 ##font.init()
 ##lose = font.SysFont('Arial',70).render("ti vsral", 1,(255,0,0))
 ##win = font.SysFont('Arial',70).render("krasaychik", 1,(0,255,0))
 
 
-game = True
 while run:
     for e in event.get():
         if e.type == QUIT:
             run = False
 
     if not(finish):
-     
-        
+        window.fill(white)
+        racket1.update()
+        racket2.update()
+        racket1.reset()
+        racket2.reset()
     display.update()            
-    clock.tick(60)
+    clock.tick(80)
 
